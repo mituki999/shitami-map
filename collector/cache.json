@@ -1,0 +1,102 @@
+{
+  "geo": {
+    "hanayashiki": {
+      "lat": 35.7154975,
+      "lng": 139.7946127,
+      "by": "osm-name"
+    },
+    "menchi": {
+      "lat": 35.71286,
+      "lng": 139.796219,
+      "by": "gsi-address"
+    },
+    "kuroge": {
+      "lat": 35.71154,
+      "lng": 139.79628,
+      "by": "gsi-address"
+    },
+    "kagetsudo": {
+      "lat": 35.714573,
+      "lng": 139.794113,
+      "by": "gsi-address"
+    },
+    "unana": {
+      "lat": 35.715202,
+      "lng": 139.794373,
+      "by": "gsi-address"
+    },
+    "imopippi": {
+      "lat": 35.714176,
+      "lng": 139.794571,
+      "by": "gsi-address"
+    },
+    "soratsuki": {
+      "lat": 35.712406,
+      "lng": 139.797028,
+      "by": "gsi-address",
+      "approx": true
+    },
+    "kokonoe": {
+      "lat": 35.712856,
+      "lng": 139.796585,
+      "by": "gsi-address",
+      "approx": true
+    },
+    "hoppy": {
+      "lat": 35.713762,
+      "lng": 139.7942208,
+      "by": "osm-name"
+    },
+    "takotako": {
+      "lat": 35.7125793,
+      "lng": 139.7976947,
+      "by": "osm-name"
+    },
+    "mitsuya": {
+      "lat": 35.712017,
+      "lng": 139.797058,
+      "by": "gsi-address",
+      "approx": true
+    },
+    "sakurasaku": {
+      "lat": 35.710384,
+      "lng": 139.792603,
+      "by": "gsi-address"
+    },
+    "koshin": {
+      "lat": 35.7127428,
+      "lng": 139.7967021,
+      "by": "osm-name"
+    },
+    "tabanenoshi": {
+      "lat": 35.7143188,
+      "lng": 139.7946221,
+      "by": "osm-name"
+    },
+    "romankan": {
+      "lat": 35.712905,
+      "lng": 139.7968064,
+      "by": "osm-name"
+    },
+    "yokocho": {
+      "lat": 35.7140661,
+      "lng": 139.7936219,
+      "by": "osm-name"
+    },
+    "tokiwado": {
+      "lat": 35.7111261,
+      "lng": 139.7961247,
+      "by": "osm-name"
+    },
+    "irokawa": {
+      "lat": 35.7092889,
+      "lng": 139.7951719,
+      "by": "osm-name"
+    },
+    "nonki": {
+      "lat": 35.710377,
+      "lng": 139.796844,
+      "by": "gsi-address"
+    }
+  }
+}

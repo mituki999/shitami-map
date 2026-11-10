@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Shitami — ショート動画で下見する地図</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <main>
+      <!-- 地図から探す -->
+      <section id="view-map" class="view active">
+        <div id="map"></div>
+        <div class="chips floating" id="cat-chips"></div>
+        <div class="sheet" id="sheet" aria-hidden="true"></div>
+      </section>
+
+      <!-- 気分から探す -->
+      <section id="view-mood" class="view scroll">
+        <header class="page-head">
+          <h1>今日はどんな気分?</h1>
+          <p>条件を選ぶと、合う場所のショート動画が流れてきます。</p>
+        </header>
+        <h2 class="q">どのあたりで</h2>
+        <div class="chips wrap" id="mood-area"></div>
+        <h2 class="q">誰と</h2>
+        <div class="chips wrap" id="mood-who"></div>
+        <h2 class="q">何をする <small>(複数選択・未選択ならぜんぶ)</small></h2>
+        <div class="chips wrap" id="mood-cat"></div>
+        <div class="mood-cta">
+          <button class="btn primary big" id="mood-go"></button>
+        </div>
+      </section>
+
+      <!-- 行きたいリスト -->
+      <section id="view-saved" class="view scroll">
+        <header class="page-head">
+          <h1>行きたいリスト</h1>
+          <p>動画や地図で保存した場所。ここから経路を開いて、実際に行く。</p>
+        </header>
+        <div id="saved-list"></div>
+      </section>
+    </main>
+
+    <nav class="tabbar" id="tabbar">
+      <button data-tab="map" class="active"><span>🗺️</span>地図</button>
+      <button data-tab="mood"><span>✨</span>気分</button>
+      <button data-tab="saved"><span>🔖</span>行きたい<i id="saved-badge"></i></button>
+    </nav>
+
+    <!-- ショート動画フィード(全画面オーバーレイ) -->
+    <div class="feed" id="feed" hidden>
+      <div class="feed-head">
+        <button class="icon-btn" id="feed-close" aria-label="閉じる">‹</button>
+        <div class="feed-title" id="feed-title"></div>
+      </div>
+      <div class="feed-scroll" id="feed-scroll"></div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
