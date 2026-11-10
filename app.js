@@ -7,6 +7,21 @@ const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
 // 外部サービス由来の文字列は必ずエスケープして埋める
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
+// 自己修復: 再生時にプレイヤーが「無効な動画」と返したものを覚えておき、次回から出さない。
+// 収集時の検証をすり抜けた動画や、収集後に消えた動画への最後の守り。
+// (プロトタイプでは端末内に記録。本番ではサーバーへ報告し、全員のデータから外す)
+const dead = (() => {
+  try { return new Set(JSON.parse(localStorage.getItem('shitami.dead') || '[]')); } catch { return new Set(); }
+})();
+function markDead(videoId) {
+  dead.add(videoId);
+  try { localStorage.setItem('shitami.dead', JSON.stringify([...dead])); } catch { /* 記録できなくても動かす */ }
+}
+for (let i = PLACES.length - 1; i >= 0; i--) {
+  PLACES[i].videos = PLACES[i].videos.filter((v) => !dead.has(`${v.src}-${v.vid}`));
+  if (!PLACES[i].videos.length) PLACES.splice(i, 1); // 動画が残っていない場所は地図に出さない
+}
+
 // 動画を平坦化(各動画は必ず1つの場所に紐づく = このアプリの中心となるデータ構造)
 const VIDEOS = PLACES.flatMap((p, i) =>
   p.videos.map((v, j) => ({ ...v, id: `${v.src}-${v.vid}`, place: p, lock: i * 10 + j + 1, rank: j }))
@@ -342,8 +357,15 @@ function setMuted(m) {
   });
 }
 
-function onState({ playing, paused, time, duration, error }) {
+function onState({ playing, paused, time, duration, error, gone }) {
   const clip = playingClip;
+  if (gone) {
+    // 削除・非公開・埋め込み不可が確定: 記録して、次の動画へ自動で進む
+    markDead(clip.dataset.id);
+    const next = clip.nextElementSibling;
+    toast('公開が終了した動画をスキップしました');
+    if (next) setTimeout(() => clip === playingClip && next.scrollIntoView({ behavior: 'smooth' }), 700);
+  }
   if (playing) clip.classList.add('live'); // 再生が始まったらサムネイルを隠す
   if (playing || paused) clip.classList.toggle('paused', !!paused);
   if (duration) clip._dur = duration;
@@ -365,12 +387,12 @@ window.addEventListener('message', (e) => {
     if (d.type === 'onCurrentTime') onState({ time: v?.currentTime, duration: v?.duration });
     if (d.type === 'onPlayerError') {
       if (v?.errorCode === 3002) { setMuted(true); command('play'); } // 音あり自動再生をブラウザが止めた
-      else onState({ error: true });
+      else onState({ error: true, gone: v?.errorCode === 1001 }); // 1001 = 無効な動画。2001等は一時的なエラーなので記録しない
     }
   }
   if (e.origin === ORIGIN.youtube) {
     const i = d.info;
-    if (d.event === 'onError') onState({ error: true });
+    if (d.event === 'onError') onState({ error: true, gone: [100, 101, 150].includes(i) }); // 削除・非公開・埋め込み禁止
     if (i && typeof i === 'object') onState({ playing: i.playerState === 1, paused: i.playerState === 2, time: i.currentTime, duration: i.duration });
   }
 });
