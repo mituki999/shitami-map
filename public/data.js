@@ -76,34 +76,6 @@ const WHO = {
 };
 const PLACES = [
   {
-    "id": "kaminarimon",
-    "name": "雷門",
-    "cat": "sight",
-    "area": "kaminarimon",
-    "lat": 35.71106,
-    "lng": 139.79636,
-    "geo": "fixed",
-    "approx": false,
-    "emoji": "🏮",
-    "hue": 5,
-    "desc": "浅草の入口に立つ大提灯の門。早朝や夜は人が少なく写真が撮りやすい。",
-    "photo": "",
-    "videos": [
-      {
-        "src": "tiktok",
-        "vid": "7060650532091825410",
-        "t": "早朝の雷門、提灯が消灯する瞬間",
-        "by": "ut.hangout.u",
-        "who": [
-          "solo",
-          "date"
-        ],
-        "thumb": "",
-        "url": "https://www.tiktok.com/@ut.hangout.u/video/7060650532091825410"
-      }
-    ]
-  },
-  {
     "id": "sensoji",
     "name": "浅草寺",
     "cat": "sight",
@@ -129,19 +101,6 @@ const PLACES = [
         ],
         "thumb": "https://i.ytimg.com/vi/Wyb7IN30f4M/hqdefault.jpg",
         "url": "https://www.youtube.com/shorts/Wyb7IN30f4M"
-      },
-      {
-        "src": "tiktok",
-        "vid": "7297240676519922951",
-        "t": "浅草寺でおみくじ引いたら凶でした",
-        "by": "uki3549",
-        "who": [
-          "boys",
-          "girls",
-          "date"
-        ],
-        "thumb": "",
-        "url": "https://www.tiktok.com/@uki3549/video/7297240676519922951"
       }
     ]
   },
@@ -237,36 +196,6 @@ const PLACES = [
     ]
   },
   {
-    "id": "menchi",
-    "name": "浅草メンチ",
-    "cat": "snack",
-    "area": "denboin",
-    "lat": 35.71286,
-    "lng": 139.796219,
-    "geo": "gsi-address",
-    "approx": false,
-    "emoji": "🥩",
-    "hue": 25,
-    "desc": "伝法院通りの行列メンチカツ。浅草食べ歩きの定番。",
-    "photo": "",
-    "videos": [
-      {
-        "src": "tiktok",
-        "vid": "7200297358570179841",
-        "t": "浅草で一番おすすめしたいメンチカツ",
-        "by": "gourmet_uni_japan_",
-        "who": [
-          "boys",
-          "girls",
-          "date",
-          "solo"
-        ],
-        "thumb": "",
-        "url": "https://www.tiktok.com/@gourmet_uni_japan_/video/7200297358570179841"
-      }
-    ]
-  },
-  {
     "id": "kuroge",
     "name": "浅草コロッケ くろげ 雷門店",
     "cat": "snack",
@@ -322,19 +251,6 @@ const PLACES = [
     "desc": "ふわふわのジャンボめろんぱん。アイスを挟んだものも。",
     "photo": "",
     "videos": [
-      {
-        "src": "tiktok",
-        "vid": "7370671626309995781",
-        "t": "メロンパンが食べ歩きのハイライトだった",
-        "by": "atediana28",
-        "who": [
-          "girls",
-          "date",
-          "family"
-        ],
-        "thumb": "",
-        "url": "https://www.tiktok.com/@atediana28/video/7370671626309995781"
-      },
       {
         "src": "tiktok",
         "vid": "7238545417108032774",
@@ -434,35 +350,6 @@ const PLACES = [
     ]
   },
   {
-    "id": "soratsuki",
-    "name": "浅草そらつき",
-    "cat": "snack",
-    "area": "kaminarimon",
-    "lat": 35.712406,
-    "lng": 139.797028,
-    "geo": "gsi-address",
-    "approx": true,
-    "emoji": "🍡",
-    "hue": 345,
-    "desc": "大粒の団子やいちごを使った和スイーツの店。",
-    "photo": "",
-    "videos": [
-      {
-        "src": "tiktok",
-        "vid": "7196277778294115585",
-        "t": "大粒のみたらし団子",
-        "by": "jukananan727",
-        "who": [
-          "girls",
-          "date",
-          "solo"
-        ],
-        "thumb": "",
-        "url": "https://www.tiktok.com/@jukananan727/video/7196277778294115585"
-      }
-    ]
-  },
-  {
     "id": "kokonoe",
     "name": "浅草九重",
     "cat": "snack",
@@ -507,19 +394,6 @@ const PLACES = [
     "videos": [
       {
         "src": "tiktok",
-        "vid": "7065249607332269314",
-        "t": "ホッピー通りで旬の魚と酒「ととや」",
-        "by": "sakaba_dig",
-        "who": [
-          "boys",
-          "solo",
-          "date"
-        ],
-        "thumb": "",
-        "url": "https://www.tiktok.com/@sakaba_dig/video/7065249607332269314"
-      },
-      {
-        "src": "tiktok",
         "vid": "6952302165574569218",
         "t": "ホッピー通りで瓶ビール2本",
         "by": "yurumeshi001",
@@ -529,76 +403,6 @@ const PLACES = [
         ],
         "thumb": "",
         "url": "https://www.tiktok.com/@yurumeshi001/video/6952302165574569218"
-      },
-      {
-        "src": "tiktok",
-        "vid": "7142382900523076865",
-        "t": "老舗「つくし」でもんじゃと昼飲み",
-        "by": "jc_ygyg",
-        "who": [
-          "boys",
-          "girls"
-        ],
-        "thumb": "",
-        "url": "https://www.tiktok.com/@jc_ygyg/video/7142382900523076865"
-      }
-    ]
-  },
-  {
-    "id": "takotako",
-    "name": "蛸たこ×ころも兄弟",
-    "cat": "snack",
-    "area": "kaminarimon",
-    "lat": 35.712579,
-    "lng": 139.797695,
-    "geo": "osm-name",
-    "approx": false,
-    "emoji": "🐙",
-    "hue": 350,
-    "desc": "せんべいにたこ焼きを挟んだ「たこせん」の専門店。",
-    "photo": "",
-    "videos": [
-      {
-        "src": "tiktok",
-        "vid": "7209974799831960833",
-        "t": "消費期限3分のたこせん",
-        "by": "yuuuuto38",
-        "who": [
-          "boys",
-          "girls",
-          "date"
-        ],
-        "thumb": "",
-        "url": "https://www.tiktok.com/@yuuuuto38/video/7209974799831960833"
-      }
-    ]
-  },
-  {
-    "id": "mitsuya",
-    "name": "甘味みつや",
-    "cat": "sweets",
-    "area": "kaminarimon",
-    "lat": 35.712017,
-    "lng": 139.797058,
-    "geo": "gsi-address",
-    "approx": true,
-    "emoji": "🍯",
-    "hue": 38,
-    "desc": "白玉専門店。みたらし白玉は手土産にも。",
-    "photo": "",
-    "videos": [
-      {
-        "src": "tiktok",
-        "vid": "7188058359021456641",
-        "t": "白玉専門店のみたらし団子",
-        "by": "yuuuuto38",
-        "who": [
-          "girls",
-          "date",
-          "family"
-        ],
-        "thumb": "",
-        "url": "https://www.tiktok.com/@yuuuuto38/video/7188058359021456641"
       }
     ]
   },
@@ -627,35 +431,6 @@ const PLACES = [
         ],
         "thumb": "",
         "url": "https://www.tiktok.com/@tokyo_foods/video/7241104578752613633"
-      }
-    ]
-  },
-  {
-    "id": "koshin",
-    "name": "おいもやさん興伸",
-    "cat": "snack",
-    "area": "denboin",
-    "lat": 35.712743,
-    "lng": 139.796702,
-    "geo": "osm-name",
-    "approx": false,
-    "emoji": "🍠",
-    "hue": 28,
-    "desc": "つやつやの大学芋が名物の芋菓子専門店。",
-    "photo": "",
-    "videos": [
-      {
-        "src": "tiktok",
-        "vid": "7225526744541924609",
-        "t": "浅草で一番食べてほしい大学芋",
-        "by": "gourmet_uni_japan_",
-        "who": [
-          "girls",
-          "solo",
-          "family"
-        ],
-        "thumb": "",
-        "url": "https://www.tiktok.com/@gourmet_uni_japan_/video/7225526744541924609"
       }
     ]
   },

@@ -94,16 +94,37 @@ async function verify(c) {
     }
     const d = await getJson('https://www.tiktok.com/oembed?url=' + encodeURIComponent(c.url));
     if (!d.embed_product_id) return { ok: false, why: 'oEmbedにIDなし' };
+    // 【反省】TikTokのoEmbedは、削除済み・非公開アカウントの動画にも「有効」と返す(2026-11、24本中10本が該当)。
+    // そこで動画ページ本体の状態コードまで確認する。0 = 公開中 / 10204 = 削除 / 10222 = 非公開アカウント など
+    const st = await tiktokStatus(c.url);
+    if (st.code !== 0) return { ok: false, why: TT_STATUS[st.code] || `公開されていない (状態 ${st.code} ${st.msg})` };
     return { ok: true, ...v, title: d.title || '', thumb: d.thumbnail_url || '' };
   } catch (e) {
-    return { ok: false, why: '非公開・削除・埋め込み不可の可能性 (' + e.message + ')' };
+    // YouTubeのoEmbedは削除・非公開で404、埋め込み禁止で401を返すので、これだけで判定できる
+    return { ok: false, why: '非公開・削除・埋め込み不可 (' + e.message + ')' };
   }
+}
+
+const TT_STATUS = { 10204: '削除済み', 10222: '非公開アカウント', 10216: '非公開の動画' };
+async function tiktokStatus(url) {
+  await sleep(400); // 連続アクセスを避ける
+  const r = await fetch(url, { headers: UA, redirect: 'follow', signal: AbortSignal.timeout(25000) });
+  const html = await r.text();
+  const code = html.match(/"statusCode":(\d+)/)?.[1];
+  const msg = html.match(/"statusMsg":"([^"]*)"/)?.[1] || '';
+  // 状態が読めないときは「確認できない = 載せない」。確認できた動画だけを地図に出す
+  if (code == null) return { code: -1, msg: '状態を読み取れない (HTTP ' + r.status + ')' };
+  if (/"privateItem":true|"secret":true/.test(html)) return { code: 10216, msg: 'private' };
+  return { code: +code, msg };
 }
 
 /* ---------- 実行 ---------- */
 const places = await read('places.json');
 const candidates = await read('candidates.json');
-const report = { placesOk: 0, placesNoGeo: [], videosOk: 0, videosDropped: [], bySource: {} };
+const TARGET = 2; // 1か所あたりの最低本数。消えても場所が空にならないよう、足りない場所は再収集の対象にする
+const today = new Date().toISOString().slice(0, 10);
+const embedCheck = await read('embed-check.json', { results: {} });
+const report = { checkedAt: today, placesOk: 0, placesNoGeo: [], videosOk: 0, bySource: {}, videosDropped: [], notPlayerTested: [], placesEmpty: [], needMore: [] };
 const out = [];
 
 for (const p of places) {
@@ -111,12 +132,18 @@ for (const p of places) {
   if (!geo) { report.placesNoGeo.push(p.name); continue; }
   const videos = [];
   for (const c of candidates.filter((c) => c.place === p.id)) {
-    const r = await verify(c);
-    if (!r.ok) { report.videosDropped.push(`${p.name}: ${c.url} — ${r.why}`); continue; }
+    let r = await verify(c);
+    // 最終関門: 実際のプレイヤーで再生できなかった記録(public/check.html の結果)があれば載せない。
+    // ページ上は公開中でも埋め込みだけ拒否される動画があり、これはプレイヤーで試すまで分からない
+    const played = r.ok && embedCheck.results?.[`${r.src}-${r.vid}`];
+    if (played && played.ok === false) r = { ok: false, why: `プレイヤーが再生を拒否 (エラー ${played.err})` };
+    if (r.ok && !played) report.notPlayerTested.push(c.url);
+    if (!r.ok) { report.videosDropped.push({ place: p.name, url: c.url, why: r.why }); continue; }
     videos.push({ src: r.src, vid: r.vid, t: c.t, by: r.by, who: c.who, thumb: r.thumb, url: c.url });
     report.bySource[r.src] = (report.bySource[r.src] || 0) + 1;
   }
-  if (!videos.length) continue; // 動画のない場所は地図に出さない
+  if (videos.length < TARGET) report.needMore.push(`${p.name}(${videos.length}本)`);
+  if (!videos.length) { report.placesEmpty.push(p.name); continue; } // 動画のない場所は地図に出さない
   videos.sort((a, b) => !!b.thumb - !!a.thumb); // サムネイルのある動画を先頭に
   out.push({
     id: p.id, name: p.name, cat: p.cat, area: nearestZone(geo.lat, geo.lng),
@@ -150,5 +177,7 @@ const WHO = ${JSON.stringify({
 const PLACES = ${JSON.stringify(out, null, 2)};
 `;
 await writeFile(path.join(dir, '..', 'public', 'data.js'), js);
+// 落とした動画と「もっと集めるべき場所」を残す。次の収集はこのファイルを見て、不足分だけ探しに行く
+await writeFile(path.join(dir, 'report.json'), JSON.stringify(report, null, 2));
 console.log(JSON.stringify(report, null, 2));
 console.log(out.map((p) => `${p.name}\t${p.lat},${p.lng}\t${p.geo}\t${p.area}\t${p.videos.length}本`).join('\n'));

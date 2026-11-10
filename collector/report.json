@@ -1,0 +1,101 @@
+{
+  "checkedAt": "2026-11-10",
+  "placesOk": 15,
+  "placesNoGeo": [],
+  "videosOk": 24,
+  "bySource": {
+    "youtube": 10,
+    "tiktok": 14
+  },
+  "videosDropped": [
+    {
+      "place": "雷門",
+      "url": "https://www.tiktok.com/@ut.hangout.u/video/7060650532091825410",
+      "why": "削除済み"
+    },
+    {
+      "place": "浅草寺",
+      "url": "https://www.tiktok.com/@uki3549/video/7297240676519922951",
+      "why": "非公開アカウント"
+    },
+    {
+      "place": "浅草メンチ",
+      "url": "https://www.tiktok.com/@gourmet_uni_japan_/video/7200297358570179841",
+      "why": "プレイヤーが再生を拒否 (エラー 1001)"
+    },
+    {
+      "place": "浅草花月堂 本店",
+      "url": "https://www.tiktok.com/@atediana28/video/7370671626309995781",
+      "why": "非公開アカウント"
+    },
+    {
+      "place": "浅草そらつき",
+      "url": "https://www.tiktok.com/@jukananan727/video/7196277778294115585",
+      "why": "プレイヤーが再生を拒否 (エラー 1001)"
+    },
+    {
+      "place": "ホッピー通り",
+      "url": "https://www.tiktok.com/@sakaba_dig/video/7065249607332269314",
+      "why": "削除済み"
+    },
+    {
+      "place": "ホッピー通り",
+      "url": "https://www.tiktok.com/@jc_ygyg/video/7142382900523076865",
+      "why": "削除済み"
+    },
+    {
+      "place": "蛸たこ×ころも兄弟",
+      "url": "https://www.tiktok.com/@yuuuuto38/video/7209974799831960833",
+      "why": "プレイヤーが再生を拒否 (エラー 1001)"
+    },
+    {
+      "place": "甘味みつや",
+      "url": "https://www.tiktok.com/@yuuuuto38/video/7188058359021456641",
+      "why": "プレイヤーが再生を拒否 (エラー 1001)"
+    },
+    {
+      "place": "おいもやさん興伸",
+      "url": "https://www.tiktok.com/@gourmet_uni_japan_/video/7225526744541924609",
+      "why": "プレイヤーが再生を拒否 (エラー 1001)"
+    }
+  ],
+  "notPlayerTested": [
+    "https://www.youtube.com/shorts/Wyb7IN30f4M",
+    "https://www.youtube.com/shorts/wD7bt21SxGg",
+    "https://www.youtube.com/shorts/Nk9uHxdhjm4",
+    "https://www.youtube.com/shorts/zaA6pbE21TA",
+    "https://www.youtube.com/watch?v=paBzrv8Sdio",
+    "https://www.youtube.com/shorts/q0bDDCRP3M4",
+    "https://www.youtube.com/watch?v=JHQ6JebBcfA",
+    "https://www.youtube.com/shorts/aZgb5nMBrbo",
+    "https://www.youtube.com/shorts/K_4Q_UTYr2o",
+    "https://www.youtube.com/shorts/KkQUA-kjBjE"
+  ],
+  "placesEmpty": [
+    "雷門",
+    "浅草メンチ",
+    "浅草そらつき",
+    "蛸たこ×ころも兄弟",
+    "甘味みつや",
+    "おいもやさん興伸"
+  ],
+  "needMore": [
+    "雷門(0本)",
+    "浅草寺(1本)",
+    "浅草メンチ(0本)",
+    "浅草花月堂 本店(1本)",
+    "芋ぴっぴ。浅草店(1本)",
+    "浅草そらつき(0本)",
+    "浅草九重(1本)",
+    "ホッピー通り(1本)",
+    "蛸たこ×ころも兄弟(0本)",
+    "甘味みつや(0本)",
+    "かき氷専門店 サクラ咲 浅草店(1本)",
+    "おいもやさん興伸(0本)",
+    "浅草茶屋 たばねのし(1本)",
+    "浅草横町(1本)",
+    "常盤堂雷おこし本舗(1本)",
+    "うなぎ色川(1本)",
+    "浅草 もつ焼のんき(1本)"
+  ]
+}

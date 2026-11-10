@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shitami — 埋め込み再生チェック</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; max-width: 760px; line-height: 1.6; }
+    table { border-collapse: collapse; width: 100%; font-size: 14px; }
+    td, th { border-bottom: 1px solid #ddd; padding: 6px 8px; text-align: left; }
+    .ok { color: #0a7a3c; font-weight: 700; } .ng { color: #c62828; font-weight: 700; }
+    textarea { width: 100%; height: 180px; font: 12px/1.4 ui-monospace, monospace; }
+    iframe { position: fixed; right: 8px; bottom: 8px; width: 180px; height: 320px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>埋め込み再生チェック(運用者向け)</h1>
+  <p>地図に載せている動画を、実際の公式プレイヤーで1本ずつ読み込み、再生できるかを確かめます。
+    TikTokは埋め込み元が localhost だと全件拒否するので、<b>公開ドメイン上で開いてください</b>。
+    結果のJSONを <code>collector/embed-check.json</code> に保存して <code>node collector/build.mjs</code> を回すと、再生できない動画が地図から外れます。</p>
+  <p id="status">準備中…</p>
+  <table><thead><tr><th>場所</th><th>動画</th><th>結果</th></tr></thead><tbody id="rows"></tbody></table>
+  <h2>結果JSON</h2>
+  <textarea id="out" readonly></textarea>
+
+  <script src="data.js"></script>
+  <script>
+    const videos = PLACES.flatMap((p) => p.videos.map((v) => ({ ...v, place: p.name, id: `${v.src}-${v.vid}` })));
+    const results = {};
+    const playerUrl = (v) => v.src === 'tiktok'
+      ? `https://www.tiktok.com/player/v1/${v.vid}?autoplay=1`
+      : `https://www.youtube.com/embed/${v.vid}?autoplay=1&mute=1&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`;
+
+    // プレイヤーが「準備完了」か「エラー」を返すまで待つ(最大8秒。無応答は unknown として残す)
+    function test(v) {
+      return new Promise((resolve) => {
+        const f = document.createElement('iframe');
+        f.src = playerUrl(v);
+        f.allow = 'autoplay; encrypted-media';
+        let done = false;
+        const finish = (r) => { if (done) return; done = true; removeEventListener('message', onMsg); f.remove(); resolve(r); };
+        const onMsg = (e) => {
+          if (e.source !== f.contentWindow) return;
+          let d = e.data;
+          if (typeof d === 'string') { try { d = JSON.parse(d); } catch { return; } }
+          if (!d) return;
+          if (v.src === 'tiktok' && d['x-tiktok-player']) {
+            if (d.type === 'onPlayerError') finish({ ok: false, err: d.value?.errorCode });
+            if (d.type === 'onPlayerReady') setTimeout(() => finish({ ok: true }), 1500); // 準備完了の直後にエラーが来ないか少し待つ
+          }
+          if (v.src === 'youtube') {
+            if (d.event === 'onError') finish({ ok: false, err: d.info });
+            if (d.event === 'onReady' || d.info?.playerState === 1) setTimeout(() => finish({ ok: true }), 1500);
+          }
+        };
+        addEventListener('message', onMsg);
+        if (v.src === 'youtube') f.addEventListener('load', () => f.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 1, channel: 'widget' }), 'https://www.youtube.com'));
+        document.body.appendChild(f);
+        setTimeout(() => finish({ ok: null }), 8000);
+      });
+    }
+
+    (async () => {
+      const rows = document.getElementById('rows');
+      for (const [i, v] of videos.entries()) {
+        document.getElementById('status').textContent = `確認中 ${i + 1} / ${videos.length}`;
+        const r = await test(v);
+        results[v.id] = r.ok === null ? { ok: null } : r;
+        const label = r.ok ? '<span class="ok">再生OK</span>' : r.ok === false ? `<span class="ng">再生不可 (${r.err})</span>` : '応答なし';
+        rows.insertAdjacentHTML('beforeend', `<tr><td></td><td><a target="_blank" rel="noopener"></a></td><td>${label}</td></tr>`);
+        const tr = rows.lastElementChild;
+        tr.children[0].textContent = v.place;
+        tr.querySelector('a').textContent = `${v.src} @${v.by}`;
+        tr.querySelector('a').href = v.url;
+        document.getElementById('out').value = JSON.stringify(
+          { checkedAt: new Date().toISOString().slice(0, 10), origin: location.origin, results }, null, 2);
+      }
+      const ng = Object.values(results).filter((r) => r.ok === false).length;
+      document.getElementById('status').textContent = `完了: ${videos.length}本中 ${ng}本が再生不可`;
+      window.__checkDone = true;
+    })();
+  </script>
+</body>
+</html>
